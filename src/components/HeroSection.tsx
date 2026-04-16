@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import Icon from '@/components/ui/icon';
 
@@ -18,6 +19,7 @@ const stats = [
 const VK_VIDEO_URL = 'https://vkvideo.ru/video_ext.php?oid=-71283397&id=456239274&hd=2';
 
 export default function HeroSection() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
@@ -105,7 +107,10 @@ export default function HeroSection() {
               )}
             >
               <div className="flex flex-wrap gap-4">
-                <button className="flex items-center gap-2 rounded-lg bg-emerald-500 px-6 py-3 font-medium text-white transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/25">
+                <button
+                  onClick={() => navigate('/passport')}
+                  className="flex items-center gap-2 rounded-lg bg-emerald-500 px-6 py-3 font-medium text-white transition-all hover:bg-emerald-400 hover:shadow-lg hover:shadow-emerald-500/25"
+                >
                   <Icon name="FileText" size={18} />
                   Получить паспорт
                 </button>
