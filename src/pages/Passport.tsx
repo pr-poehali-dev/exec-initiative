@@ -63,7 +63,19 @@ export default function Passport() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStep('loading');
-    setTimeout(() => setStep('result'), 3000);
+    setTimeout(() => {
+      setStep('result');
+      localStorage.setItem('lastPassport', JSON.stringify({
+        name: form.name,
+        address: form.address,
+        area: form.area,
+        year: form.year,
+        floors: form.floors,
+        imagePreview: form.imagePreview,
+        grade,
+        date: new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' }),
+      }));
+    }, 3000);
   };
 
   const passportDate = new Date().toLocaleDateString('ru-RU', {
