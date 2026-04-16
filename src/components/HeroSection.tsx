@@ -15,7 +15,7 @@ const stats = [
   { icon: 'TrendingDown', label: 'Снижение счетов', value: 'от 3 800 ₽/год' },
 ];
 
-const VK_VIDEO_URL = 'https://vk.com/video_ext.php?oid=-227420429&id=456239017&hd=2';
+const VK_VIDEO_URL = 'https://vkvideo.ru/video_ext.php?oid=-71283397&id=456239274&hd=2';
 
 export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
