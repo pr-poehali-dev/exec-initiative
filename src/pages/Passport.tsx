@@ -277,23 +277,37 @@ export default function Passport() {
                   </div>
                 )}
 
-                {/* Info grid */}
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="text-white/40">Владелец</p>
-                    <p className="font-medium text-white">{form.name || '—'}</p>
+                {/* Данные о квартире */}
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Icon name="Home" size={16} className="text-emerald-400" />
+                    <p className="text-sm font-medium text-white/70">Данные о квартире</p>
                   </div>
-                  <div>
-                    <p className="text-white/40">Адрес</p>
-                    <p className="font-medium text-white">{form.address || '—'}</p>
-                  </div>
-                  <div>
-                    <p className="text-white/40">Площадь</p>
-                    <p className="font-medium text-white">{form.area} м²</p>
-                  </div>
-                  <div>
-                    <p className="text-white/40">Год постройки</p>
-                    <p className="font-medium text-white">{form.year}</p>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <p className="text-white/40">Владелец</p>
+                      <p className="font-medium text-white">{form.name || '—'}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/40">Адрес</p>
+                      <p className="font-medium text-white">{form.address || '—'}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/40">Площадь</p>
+                      <p className="font-medium text-white">{form.area} м²</p>
+                    </div>
+                    <div>
+                      <p className="text-white/40">Год постройки</p>
+                      <p className="font-medium text-white">{form.year}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/40">Этаж</p>
+                      <p className="font-medium text-white">{form.floors || '—'}</p>
+                    </div>
+                    <div>
+                      <p className="text-white/40">Дата оформления</p>
+                      <p className="font-medium text-white">{passportDate}</p>
+                    </div>
                   </div>
                 </div>
 
