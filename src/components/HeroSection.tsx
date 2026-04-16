@@ -11,7 +11,7 @@ const images = [
 
 const stats = [
   { icon: 'Zap', label: 'Экономия энергии', value: 'до 40%' },
-  { icon: 'ClipboardCheck', label: 'Паспортов выдано', value: '2 400+' },
+  { icon: 'ClipboardCheck', label: 'Паспортов выдано', value: '0' },
   { icon: 'TrendingDown', label: 'Снижение счетов', value: 'от 3 800 ₽/год' },
 ];
 
