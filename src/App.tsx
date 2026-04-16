@@ -10,6 +10,9 @@ const App = () => (
       <Route path="/passport" element={<Passport />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
+    <div className="fixed bottom-4 right-4 text-xs text-white/30 pointer-events-none select-none">
+      Основатель сайта Ухлинов Александр
+    </div>
   </BrowserRouter>
 );
 
