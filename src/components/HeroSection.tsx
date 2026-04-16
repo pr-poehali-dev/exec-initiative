@@ -15,9 +15,12 @@ const stats = [
   { icon: 'TrendingDown', label: 'Снижение счетов', value: 'от 3 800 ₽/год' },
 ];
 
+const VK_VIDEO_URL = 'https://vk.com/video_ext.php?oid=-227420429&id=456239017&hd=2';
+
 export default function HeroSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -106,7 +109,10 @@ export default function HeroSection() {
                   <Icon name="FileText" size={18} />
                   Получить паспорт
                 </button>
-                <button className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3 font-light text-white backdrop-blur-sm transition-all hover:bg-white/10">
+                <button
+                  onClick={() => setVideoOpen(true)}
+                  className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-6 py-3 font-light text-white backdrop-blur-sm transition-all hover:bg-white/10"
+                >
                   <Icon name="PlayCircle" size={18} />
                   Как это работает
                 </button>
@@ -138,6 +144,34 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {videoOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setVideoOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-3xl mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setVideoOpen(false)}
+              className="absolute -top-10 right-0 text-white/70 hover:text-white transition-colors"
+            >
+              <Icon name="X" size={28} />
+            </button>
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl shadow-2xl">
+              <iframe
+                src={VK_VIDEO_URL}
+                className="h-full w-full"
+                allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Slide indicators */}
       <div className="absolute bottom-8 right-8 z-20 flex gap-2">
