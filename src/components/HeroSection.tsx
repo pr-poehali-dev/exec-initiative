@@ -12,11 +12,7 @@ const images = [
   'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/d1597458-fb8a-4c48-89d1-2bb218af8d35.jpg',
 ];
 
-const stats = [
-  { icon: 'Zap', label: 'Экономия энергии', value: 'до 40%' },
-  { icon: 'ClipboardCheck', label: 'Паспортов выдано', value: '0' },
-  { icon: 'TrendingDown', label: 'Снижение счетов', value: 'от 3 800 ₽/год' },
-];
+const PASSPORTS_URL = 'https://functions.poehali.dev/7a637593-2914-4837-9bb2-0fd276698cd7';
 
 const VK_VIDEO_URL = 'https://vkvideo.ru/video_ext.php?oid=-71283397&id=456239274&hd=2';
 
@@ -27,6 +23,14 @@ export default function HeroSection() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [passportCount, setPassportCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch(`${PASSPORTS_URL}?action=count`)
+      .then(r => r.json())
+      .then(data => { if (typeof data.count === 'number') setPassportCount(data.count); })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -168,7 +172,11 @@ export default function HeroSection() {
               )}
             >
               <div className="flex flex-wrap gap-8 border-t border-white/10 pt-8">
-                {stats.map(({ icon, label, value }) => (
+                {[
+                  { icon: 'Zap', label: 'Экономия энергии', value: 'до 40%' },
+                  { icon: 'ClipboardCheck', label: 'Паспортов выдано', value: passportCount !== null ? String(passportCount) : '…' },
+                  { icon: 'TrendingDown', label: 'Снижение счетов', value: 'от 3 800 ₽/год' },
+                ].map(({ icon, label, value }) => (
                   <div key={label} className="flex items-center gap-3">
                     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
                       <Icon name={icon} size={18} />

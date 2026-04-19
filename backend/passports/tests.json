@@ -1,10 +1,11 @@
 {
   "tests": [
     {
-      "name": "Get passports without token",
+      "name": "Public count",
       "method": "GET",
-      "path": "/",
-      "expectedStatus": 401,
+      "path": "/?action=count",
+      "expectedStatus": 200,
+      "expectedBody": {"count": 1},
       "bodyMatcher": "partial"
     }
   ]

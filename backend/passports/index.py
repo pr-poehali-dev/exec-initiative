@@ -28,10 +28,18 @@ def handler(event: dict, context) -> dict:
         return {'statusCode': 200, 'headers': cors, 'body': ''}
 
     method = event.get('httpMethod', 'GET')
-    token = event.get('headers', {}).get('X-Auth-Token', '')
+    token = (event.get('headers') or {}).get('X-Auth-Token', '')
+    params = event.get('queryStringParameters') or {}
 
     conn = get_conn()
     cur = conn.cursor()
+
+    # Публичный счётчик — без авторизации
+    if method == 'GET' and params.get('action') == 'count':
+        cur.execute(f"SELECT COUNT(*) FROM {SCHEMA}.passports")
+        total = cur.fetchone()[0]
+        conn.close()
+        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'count': total})}
 
     if not token:
         conn.close()
