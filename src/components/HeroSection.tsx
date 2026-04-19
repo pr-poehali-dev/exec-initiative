@@ -10,6 +10,10 @@ const images = [
   'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/5b5a9fc5-8194-4666-bf47-7e2fe434d45b.jpg',
   'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/6c405b7c-ed42-40f1-8afa-de479938471b.jpg',
   'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/d1597458-fb8a-4c48-89d1-2bb218af8d35.jpg',
+  'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/3c403e06-53d3-4a18-b3e2-b22efd11a782.jpg',
+  'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/435d323b-0a1d-44a6-9454-9bf35a1e6752.jpg',
+  'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/6ce8dd80-8613-400e-bf1d-522c8ee9c343.jpg',
+  'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/27573fba-f8d1-4306-87c3-95a1bfd3f047.jpg',
 ];
 
 const PASSPORTS_URL = 'https://functions.poehali.dev/7a637593-2914-4837-9bb2-0fd276698cd7';
@@ -222,20 +226,7 @@ export default function HeroSection() {
         </div>
       )}
 
-      {/* Slide indicators */}
-      <div className="absolute bottom-8 right-8 z-20 flex gap-2">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentIndex(index)}
-            className={cn(
-              'h-1 transition-all duration-300',
-              currentIndex === index ? 'w-12 bg-emerald-400' : 'w-8 bg-white/30 hover:bg-white/50'
-            )}
-            aria-label={`Перейти к слайду ${index + 1}`}
-          />
-        ))}
-      </div>
+
     </section>
     </>
   );
