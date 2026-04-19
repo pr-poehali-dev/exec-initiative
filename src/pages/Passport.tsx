@@ -2,6 +2,9 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import Icon from '@/components/ui/icon';
+import { useAuth } from '@/context/AuthContext';
+
+const PASSPORTS_URL = 'https://functions.poehali.dev/7a637593-2914-4837-9bb2-0fd276698cd7';
 
 type Step = 'form' | 'loading' | 'result';
 
@@ -19,6 +22,7 @@ const EFFICIENCY_GRADES = ['A', 'A', 'A', 'B', 'B', 'C'];
 
 export default function Passport() {
   const navigate = useNavigate();
+  const { token } = useAuth();
   const fileRef = useRef<HTMLInputElement>(null);
   const [step, setStep] = useState<Step>('form');
   const [grade] = useState(() => EFFICIENCY_GRADES[Math.floor(Math.random() * EFFICIENCY_GRADES.length)]);
@@ -60,22 +64,31 @@ export default function Passport() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStep('loading');
-    setTimeout(() => {
-      setStep('result');
-      localStorage.setItem('lastPassport', JSON.stringify({
-        name: form.name,
-        address: form.address,
-        area: form.area,
-        year: form.year,
-        floors: form.floors,
-        imagePreview: form.imagePreview,
-        grade,
-        date: new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' }),
-      }));
-    }, 3000);
+    const date = new Date().toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+    const passportData = {
+      name: form.name,
+      address: form.address,
+      area: form.area,
+      year: form.year,
+      floors: form.floors,
+      imagePreview: form.imagePreview,
+      grade,
+      date,
+    };
+    localStorage.setItem('lastPassport', JSON.stringify(passportData));
+    if (token) {
+      try {
+        await fetch(PASSPORTS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token },
+          body: JSON.stringify(passportData),
+        });
+      } catch (err) { console.warn('Не удалось сохранить на сервере', err); }
+    }
+    setTimeout(() => setStep('result'), 3000);
   };
 
   const passportDate = new Date().toLocaleDateString('ru-RU', {

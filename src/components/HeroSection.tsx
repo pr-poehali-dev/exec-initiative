@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import Icon from '@/components/ui/icon';
+import { useAuth } from '@/context/AuthContext';
+import AuthModal from '@/components/AuthModal';
 
 const images = [
   'https://cdn.poehali.dev/projects/88a80fac-072e-4271-93be-97f1cdd3202b/files/85f5d3fd-edab-494e-a3f3-e6686c897fa5.jpg',
@@ -20,9 +22,11 @@ const VK_VIDEO_URL = 'https://vkvideo.ru/video_ext.php?oid=-71283397&id=45623927
 
 export default function HeroSection() {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -34,6 +38,8 @@ export default function HeroSection() {
   }, []);
 
   return (
+    <>
+    {authOpen && <AuthModal onClose={() => setAuthOpen(false)} />}
     <section className="relative h-screen w-full overflow-hidden bg-gray-950">
       <div className="absolute inset-0">
         {images.map((src, index) => (
@@ -55,6 +61,30 @@ export default function HeroSection() {
 
       <div className="absolute inset-0 bg-gradient-to-r from-gray-950/95 via-gray-950/70 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent" />
+
+      {/* Auth Button */}
+      <div className="absolute right-6 top-5 z-20">
+        {user ? (
+          <div className="flex items-center gap-3">
+            <span className="hidden text-sm text-white/60 sm:block">{user.name || user.email}</span>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur-sm transition hover:bg-white/10 hover:text-white"
+            >
+              <Icon name="LogOut" size={15} />
+              Выйти
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setAuthOpen(true)}
+            className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur-sm transition hover:bg-white/10 hover:text-white"
+          >
+            <Icon name="User" size={15} />
+            Войти
+          </button>
+        )}
+      </div>
 
       <div className="relative z-10 flex h-full items-center">
         <div className="container mx-auto px-8 md:px-16">
@@ -193,5 +223,6 @@ export default function HeroSection() {
         ))}
       </div>
     </section>
+    </>
   );
 }
