@@ -65,14 +65,20 @@ export default function HeroSection() {
       {/* Auth Button */}
       <div className="absolute right-6 top-5 z-20">
         {user ? (
-          <div className="flex items-center gap-3">
-            <span className="hidden text-sm text-white/60 sm:block">{user.name || user.email}</span>
+          <div className="flex items-center gap-2">
             <button
-              onClick={logout}
+              onClick={() => navigate('/account')}
               className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur-sm transition hover:bg-white/10 hover:text-white"
             >
+              <Icon name="User" size={15} />
+              <span className="hidden sm:block">{user.name || user.email}</span>
+              <span className="sm:hidden">Аккаунт</span>
+            </button>
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 rounded-lg border border-white/20 bg-white/5 px-3 py-2 text-sm text-white/50 backdrop-blur-sm transition hover:bg-white/10 hover:text-white"
+            >
               <Icon name="LogOut" size={15} />
-              Выйти
             </button>
           </div>
         ) : (
