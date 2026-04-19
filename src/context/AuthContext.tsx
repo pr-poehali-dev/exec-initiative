@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const savedToken = localStorage.getItem('auth_token');
     if (!savedToken) { setLoading(false); return; }
-    fetch(`${AUTH_URL}/me`, { headers: { 'X-Auth-Token': savedToken } })
+    fetch(AUTH_URL, { headers: { 'X-Auth-Token': savedToken } })
       .then(r => r.json())
       .then(data => {
         if (data.user) { setUser(data.user); setToken(savedToken); }
@@ -38,10 +38,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const r = await fetch(`${AUTH_URL}/login`, {
+    const r = await fetch(AUTH_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ action: 'login', email, password }),
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'Ошибка входа');
@@ -51,10 +51,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const register = async (email: string, password: string, name: string) => {
-    const r = await fetch(`${AUTH_URL}/register`, {
+    const r = await fetch(AUTH_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, name }),
+      body: JSON.stringify({ action: 'register', email, password, name }),
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.error || 'Ошибка регистрации');
@@ -66,9 +66,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     const t = localStorage.getItem('auth_token');
     if (t) {
-      await fetch(`${AUTH_URL}/logout`, {
+      await fetch(AUTH_URL, {
         method: 'POST',
-        headers: { 'X-Auth-Token': t },
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': t },
+        body: JSON.stringify({ action: 'logout' }),
       }).catch(() => {});
     }
     localStorage.removeItem('auth_token');
