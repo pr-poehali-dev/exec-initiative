@@ -57,7 +57,7 @@ def handler(event: dict, context) -> dict:
         cur.execute(f"INSERT INTO {SCHEMA}.sessions (user_id, token) VALUES ({user_id}, '{tok}')")
         conn.commit()
         conn.close()
-        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'token': tok, 'user': {'id': user_id, 'email': email, 'name': name}})}
+        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'token': tok, 'user': {'id': user_id, 'email': email, 'name': name, 'role': 'user'}})}
 
     # login
     if method == 'POST' and action == 'login':
@@ -65,18 +65,18 @@ def handler(event: dict, context) -> dict:
         password = body.get('password', '')
         ph = hash_password(password)
 
-        cur.execute(f"SELECT id, email, name FROM {SCHEMA}.users WHERE email = '{email}' AND password_hash = '{ph}'")
+        cur.execute(f"SELECT id, email, name, role FROM {SCHEMA}.users WHERE email = '{email}' AND password_hash = '{ph}'")
         row = cur.fetchone()
         if not row:
             conn.close()
             return {'statusCode': 401, 'headers': cors, 'body': json.dumps({'error': 'Неверный email или пароль'})}
 
-        user_id, user_email, user_name = row
+        user_id, user_email, user_name, user_role = row
         tok = secrets.token_hex(32)
         cur.execute(f"INSERT INTO {SCHEMA}.sessions (user_id, token) VALUES ({user_id}, '{tok}')")
         conn.commit()
         conn.close()
-        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'token': tok, 'user': {'id': user_id, 'email': user_email, 'name': user_name}})}
+        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'token': tok, 'user': {'id': user_id, 'email': user_email, 'name': user_name, 'role': user_role}})}
 
     # me
     if method == 'GET' or action == 'me':
@@ -84,7 +84,7 @@ def handler(event: dict, context) -> dict:
             conn.close()
             return {'statusCode': 401, 'headers': cors, 'body': json.dumps({'error': 'Не авторизован'})}
         cur.execute(f"""
-            SELECT u.id, u.email, u.name FROM {SCHEMA}.users u
+            SELECT u.id, u.email, u.name, u.role FROM {SCHEMA}.users u
             JOIN {SCHEMA}.sessions s ON s.user_id = u.id
             WHERE s.token = '{token}'
         """)
@@ -92,7 +92,7 @@ def handler(event: dict, context) -> dict:
         conn.close()
         if not row:
             return {'statusCode': 401, 'headers': cors, 'body': json.dumps({'error': 'Сессия недействительна'})}
-        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'user': {'id': row[0], 'email': row[1], 'name': row[2]}})}
+        return {'statusCode': 200, 'headers': cors, 'body': json.dumps({'user': {'id': row[0], 'email': row[1], 'name': row[2], 'role': row[3]}})}
 
     # logout
     if method == 'POST' and action == 'logout':

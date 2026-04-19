@@ -1,0 +1,11 @@
+{
+  "tests": [
+    {
+      "name": "Access denied without token",
+      "method": "GET",
+      "path": "/?action=users",
+      "expectedStatus": 403,
+      "bodyMatcher": "partial"
+    }
+  ]
+}

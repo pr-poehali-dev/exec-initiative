@@ -81,14 +81,31 @@ export default function Account() {
 
         {/* Профиль */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <div className="flex items-center gap-4">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400">
-              <Icon name="User" size={32} />
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400">
+                <Icon name="User" size={32} />
+              </div>
+              <div>
+                <h1 className="text-xl font-semibold text-white">{user?.name || 'Пользователь'}</h1>
+                <p className="text-sm text-white/50">{user?.email}</p>
+                {user?.role === 'admin' && (
+                  <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-2 py-0.5 text-xs font-medium text-red-400">
+                    <Icon name="ShieldCheck" size={11} />
+                    Администратор
+                  </span>
+                )}
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-semibold text-white">{user?.name || 'Пользователь'}</h1>
-              <p className="text-sm text-white/50">{user?.email}</p>
-            </div>
+            {user?.role === 'admin' && (
+              <button
+                onClick={() => navigate('/admin')}
+                className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:bg-red-500/20"
+              >
+                <Icon name="Shield" size={16} />
+                Панель администратора
+              </button>
+            )}
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">

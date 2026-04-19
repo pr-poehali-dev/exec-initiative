@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Passport from "./pages/Passport";
 import Account from "./pages/Account";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -12,6 +13,7 @@ const App = () => (
         <Route path="/" element={<Index />} />
         <Route path="/passport" element={<Passport />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <div className="fixed bottom-4 right-4 text-xs text-white/30 pointer-events-none select-none">
